@@ -19,20 +19,17 @@ public class TransactionSender extends  Thread {
             try {
                 int balance = wallet.getBalance(blockChain);
 
-                // Need at least 5 VC to send a transaction
                 if (balance < 5) {
                     Thread.sleep(100);
                     continue;
                 }
 
-                // Pick a random receiver (not yourself)
                 String receiver = receivers[(int) (Math.random() * receivers.length)];
                 if (receiver.equals(user.getName())) {
                     Thread.sleep(10);
                     continue;
                 }
 
-                // Keep at least 40% of balance and don't spend more than 20 VC at once
                 int availableBalance = (int) (balance * 0.6);
                 if (availableBalance < 2) {
                     Thread.sleep(100);
@@ -49,7 +46,6 @@ public class TransactionSender extends  Thread {
                     System.out.println("Failed to create transaction: " + e.getMessage());
                 }
 
-                // Minimal delay between transactions
                 Thread.sleep((long) (Math.random() * 30) + 10);
 
             } catch (InterruptedException e) {
