@@ -1,0 +1,82 @@
+type: edu
+files:
+  - name: src/blockchain/Main.java
+    visible: true
+    learner_created: false
+  - name: src/blockchain/BlockChain.java
+    visible: true
+    learner_created: false
+  - name: src/blockchain/Block.java
+    visible: true
+    learner_created: false
+  - name: src/blockchain/StringUtil.java
+    visible: true
+    learner_created: false
+  - name: test/BlockchainTest.java
+    visible: false
+    learner_created: false
+feedback_link: https://hyperskill.org/projects/50/stages/272/implement#comment
+status: Failed
+feedback:
+  message: |-
+    Wrong answer in test #2
+
+    Hash should start with some zeros
+
+    Please find below the output of your program during this failed test.
+    Note that the &#39;&gt;&#39; character indicates the beginning of the input line.
+
+    ---
+
+    &gt; 1
+    Block:
+    Id: 1
+    Timestamp: 1765971876019
+    Magic number: 0
+    Hash of the previous block:
+    0
+    Hash of the block:
+    0565615408910990375424f257a93a759575d96d314ce7005b252aaecbed2b1c
+    Block was generating for 0 seconds
+
+    Block:
+    Id: 2
+    Timestamp: 1765971876020
+    Magic number: 18
+    Hash of the previous block:
+    0565615408910990375424f257a93a759575d96d314ce7005b252aaecbed2b1c
+    Hash of the block:
+    3c2db0906ad62cf905608bd31badd4cbc22ebeb5a868d08c2c44ad03614597d8
+    Block was generating for 0 seconds
+
+    Block:
+    Id: 3
+    Timestamp: 1765971876021
+    Magic number: 2
+    Hash of the previous block:
+    3c2db0906ad62cf905608bd31badd4cbc22ebeb5a868d08c2c44ad03614597d8
+    Hash of the block:
+    2769dee367a9a160bdf21adf6f3cb5e87e18652d95dffb004e942b6a8374f914
+    Block was generating for 0 seconds
+
+    Block:
+    Id: 4
+    Timestamp: 1765971876021
+    Magic number: 2
+    Hash of the previous block:
+    2769dee367a9a160bdf21adf6f3cb5e87e18652d95dffb004e942b6a8374f914
+    Hash of the block:
+    38ffe5fd54cc6b179af6124a45787e7ffe038d6ca503cde61ab6db6d716c77c6
+    Block was generating for 0 seconds
+
+    Block:
+    Id: 5
+    Timestamp: 1765971876021
+    Magic number: 2
+    Hash of the previous block:
+    38ffe5fd54cc6b179af6124a45787e7ffe038d6ca503cde61ab6db6d716c77c6
+    Hash of the block:
+    2bab0da383a56e3c8e94647ffddf619b9f2339d50dcab248a1d159b276b3592d
+    Block was generating for 0 seconds
+  time: "Wed, 17 Dec 2025 11:44:36 UTC"
+record: 2
