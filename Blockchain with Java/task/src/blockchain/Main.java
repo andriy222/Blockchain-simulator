@@ -25,14 +25,6 @@ public class Main {
             miners[1] = new Miner(2, miner2.getName(), blockChain);
             miners[2] = new Miner(3, miner3.getName(), blockChain);
 
-            for (Miner miner : miners) {
-                miner.start();
-            }
-
-
-            Thread.sleep(50);
-
-
             TransactionSender sender1 = new TransactionSender(blockChain, aliceWallet, alice);
             TransactionSender sender2 = new TransactionSender(blockChain, bobWallet, bob);
             TransactionSender sender3 = new TransactionSender(blockChain, charlieWallet, charlie);
@@ -41,13 +33,23 @@ public class Main {
             sender2.start();
             sender3.start();
 
+            Thread.sleep(500);
+
+            for (Miner miner : miners) {
+                miner.start();
+            }
+
 
             while (blockChain.getSize() < 15) {
                 Thread.sleep(100);
             }
 
             for (Miner miner : miners) {
-                miner.join();
+                miner.interrupt();
+            }
+
+            for (Miner miner : miners) {
+                miner.join(1000);
             }
 
 

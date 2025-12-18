@@ -11,7 +11,7 @@ public class BlockChain {
     private final List<Transaction> pendingTxs =new ArrayList<>();
     private List<Transaction> currentBlockTxs = new ArrayList<>();
     private   Miner miner;
-    private int numberOfZeros = 0;
+    private int numberOfZeros = 2;
     private int currentBlockId = 0;
 
 
@@ -137,10 +137,10 @@ public class BlockChain {
     private void adjustDifficulty(Block block) {
         long generationTime = block.getTime();
 
-        if (generationTime < 10) {
+        if (generationTime < 5 && numberOfZeros < 4) {
             numberOfZeros++;
             block.setNChangeMessage("N was increased to " + numberOfZeros);
-        } else if (generationTime > 60) {
+        } else if (generationTime > 15 && numberOfZeros > 1) {
             numberOfZeros--;
             block.setNChangeMessage("N was decreased by 1");
         } else {
