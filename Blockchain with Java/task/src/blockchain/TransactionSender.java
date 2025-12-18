@@ -17,9 +17,9 @@ public class TransactionSender extends  Thread {
         while (blockChain.getSize() < 15) {
             int balance = wallet.getBalance(blockChain);
 
-            if (balance < 5) {
+            if (balance < 10) {
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(300);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     break;
@@ -27,27 +27,41 @@ public class TransactionSender extends  Thread {
                 continue;
             }
 
-            for (String receiver : receivers) {
-                if (receiver.equals(user.getName())) continue;
+            // Pick a random receiver
+            String receiver = receivers[(int) (Math.random() * receivers.length)];
+            if (receiver.equals(user.getName())) {
+                continue;
+            }
 
-                int amount = (int) (Math.random() * Math.min(30, balance / 2)) + 1;
-                balance = wallet.getBalance(blockChain);
+            balance = wallet.getBalance(blockChain);
 
-                if (balance < amount) break;
-
+            // Keep at least half of the balance
+            int availableBalance = balance / 2;
+            if (availableBalance < 5) {
                 try {
-                    Transaction transaction = wallet.createTransaction(receiver, amount);
-                    blockChain.addTx(transaction, user);
-                } catch (Exception e) {
-                    System.out.println("Failed to create transaction: " + e.getMessage());
-                }
-
-                try {
-                    Thread.sleep(50);
+                    Thread.sleep(300);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    return;
+                    break;
                 }
+                continue;
+            }
+
+            int maxAmount = Math.min(20, availableBalance / 2);
+            int amount = (int) (Math.random() * maxAmount) + 1;
+
+            try {
+                Transaction transaction = wallet.createTransaction(receiver, amount);
+                blockChain.addTx(transaction, user);
+            } catch (Exception e) {
+                System.out.println("Failed to create transaction: " + e.getMessage());
+            }
+
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
             }
         }
     }

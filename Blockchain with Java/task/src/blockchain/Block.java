@@ -95,8 +95,16 @@ public class Block {
         String zeros = zerosToString(numberOfZeros);
 
         while (!Thread.currentThread().isInterrupted()) {
-            if (magicNum % 1000 == 0 && blockChain.getSize() != expectedSize) {
-                return false;
+            if (magicNum % 100 == 0) {
+                if (blockChain.getSize() != expectedSize) {
+                    return false;
+                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return false;
+                }
             }
 
             calculateHash();

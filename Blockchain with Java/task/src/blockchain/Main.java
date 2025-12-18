@@ -18,6 +18,9 @@ public class Main {
             Wallet bobWallet = new Wallet(bob);
             Wallet charlieWallet = new Wallet(charlie);
             Wallet shopWallet = new Wallet(shopOwner);
+            Wallet miner1Wallet = new Wallet(miner1);
+            Wallet miner2Wallet = new Wallet(miner2);
+            Wallet miner3Wallet = new Wallet(miner3);
 
 
             Miner[] miners = new Miner[3];
@@ -28,16 +31,23 @@ public class Main {
             TransactionSender sender1 = new TransactionSender(blockChain, aliceWallet, alice);
             TransactionSender sender2 = new TransactionSender(blockChain, bobWallet, bob);
             TransactionSender sender3 = new TransactionSender(blockChain, charlieWallet, charlie);
+            TransactionSender minerSender1 = new TransactionSender(blockChain, miner1Wallet, miner1);
+            TransactionSender minerSender2 = new TransactionSender(blockChain, miner2Wallet, miner2);
+            TransactionSender minerSender3 = new TransactionSender(blockChain, miner3Wallet, miner3);
 
             sender1.start();
             sender2.start();
             sender3.start();
 
-            Thread.sleep(500);
+            Thread.sleep(300);
 
             for (Miner miner : miners) {
                 miner.start();
             }
+
+            minerSender1.start();
+            minerSender2.start();
+            minerSender3.start();
 
 
             while (blockChain.getSize() < 15) {
