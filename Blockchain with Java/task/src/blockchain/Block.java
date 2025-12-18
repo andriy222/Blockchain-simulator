@@ -95,12 +95,12 @@ public class Block {
         String zeros = zerosToString(numberOfZeros);
 
         while (!Thread.currentThread().isInterrupted()) {
-            if (magicNum % 100 == 0) {
+            if (magicNum % 500 == 0) {
                 if (blockChain.getSize() != expectedSize) {
                     return false;
                 }
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(5);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     return false;

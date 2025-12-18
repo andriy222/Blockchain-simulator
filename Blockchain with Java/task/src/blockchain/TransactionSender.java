@@ -12,56 +12,49 @@ public class TransactionSender extends  Thread {
 
     @Override
     public void run() {
-        String[] receivers = {"Alice", "Bob", "Charlie", "miner1", "miner2", "miner3", "ShopOwner"};
+        String[] receivers = {"Alice", "Bob", "Charlie", "Nick", "miner1", "miner2", "miner3",
+                             "miner7", "miner9", "ShopOwner", "Worker1", "Worker2", "CarShop"};
 
-        while (blockChain.getSize() < 15) {
-            int balance = wallet.getBalance(blockChain);
-
-            if (balance < 10) {
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-                continue;
-            }
-
-            // Pick a random receiver
-            String receiver = receivers[(int) (Math.random() * receivers.length)];
-            if (receiver.equals(user.getName())) {
-                continue;
-            }
-
-            balance = wallet.getBalance(blockChain);
-
-            // Keep at least half of the balance
-            int availableBalance = balance / 2;
-            if (availableBalance < 5) {
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-                continue;
-            }
-
-            int maxAmount = Math.min(20, availableBalance / 2);
-            int amount = (int) (Math.random() * maxAmount) + 1;
-
+        while (blockChain.getSize() < 15 && !Thread.currentThread().isInterrupted()) {
             try {
-                Transaction transaction = wallet.createTransaction(receiver, amount);
-                blockChain.addTx(transaction, user);
-            } catch (Exception e) {
-                System.out.println("Failed to create transaction: " + e.getMessage());
-            }
+                int balance = wallet.getBalance(blockChain);
 
-            try {
-                Thread.sleep(30);
+                // Need at least 5 VC to send a transaction
+                if (balance < 5) {
+                    Thread.sleep(100);
+                    continue;
+                }
+
+                // Pick a random receiver (not yourself)
+                String receiver = receivers[(int) (Math.random() * receivers.length)];
+                if (receiver.equals(user.getName())) {
+                    Thread.sleep(10);
+                    continue;
+                }
+
+                // Keep at least 40% of balance and don't spend more than 20 VC at once
+                int availableBalance = (int) (balance * 0.6);
+                if (availableBalance < 2) {
+                    Thread.sleep(100);
+                    continue;
+                }
+
+                int maxAmount = Math.min(20, availableBalance);
+                int amount = (int) (Math.random() * (maxAmount - 1)) + 1;
+
+                try {
+                    Transaction transaction = wallet.createTransaction(receiver, amount);
+                    blockChain.addTx(transaction, user);
+                } catch (Exception e) {
+                    System.out.println("Failed to create transaction: " + e.getMessage());
+                }
+
+                // Minimal delay between transactions
+                Thread.sleep((long) (Math.random() * 30) + 10);
+
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                return;
+                break;
             }
         }
     }
