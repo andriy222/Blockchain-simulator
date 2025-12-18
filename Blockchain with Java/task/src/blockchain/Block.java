@@ -94,9 +94,17 @@ public class Block {
         this.magicNum = 0;
         String zeros = zerosToString(numberOfZeros);
 
-        while (true) {
-            if (magicNum % 1000 == 0 && blockChain.getSize() != expectedSize) {
-                return false;
+        while (!Thread.currentThread().isInterrupted()) {
+            if (magicNum % 100 == 0) {
+                if (blockChain.getSize() != expectedSize) {
+                    return false;
+                }
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return false;
+                }
             }
 
             calculateHash();
@@ -107,6 +115,7 @@ public class Block {
             }
             magicNum++;
         }
+        return false;
     }
 
     @Override

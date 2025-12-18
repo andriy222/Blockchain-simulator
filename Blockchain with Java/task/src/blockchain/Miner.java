@@ -16,7 +16,7 @@ public class Miner extends Thread {
     }
 
     public void run() {
-        while (blockChain.getSize() < 5) {
+        while (blockChain.getSize() < 15 && !Thread.currentThread().isInterrupted()) {
             int currentSize = blockChain.getSize();
 
             Block block = blockChain.createNextBlock(getMiner());

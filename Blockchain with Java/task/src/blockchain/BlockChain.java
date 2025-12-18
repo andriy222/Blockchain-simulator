@@ -23,14 +23,14 @@ public class BlockChain {
         return blockArrayList;
     }
 
-    public int getBalance(User user) {
-        int balance = 100;  // ← Локальна змінна!
+    public synchronized int getBalance(User user) {
+        int balance = 100;
 
         for(Block block : blockArrayList) {
             if(Objects.equals(block.getMinerName(), user.getName())) {
                 balance += 100;
             }
-            for (Transaction tx : block.tx) {  // ← НЕ currentBlockTxs, а block.tx!
+            for (Transaction tx : block.tx) {
                 if(Objects.equals(tx.getSenderName(), user.getName())) {
                     balance -= tx.getAmount();
                 }
@@ -39,6 +39,14 @@ public class BlockChain {
                 }
             }
         }
+
+        // Account for pending transactions
+        for (Transaction tx : pendingTxs) {
+            if(Objects.equals(tx.getSenderName(), user.getName())) {
+                balance -= tx.getAmount();
+            }
+        }
+
         return balance;
     }
 
@@ -137,12 +145,12 @@ public class BlockChain {
     private void adjustDifficulty(Block block) {
         long generationTime = block.getTime();
 
-        if (generationTime < 10) {
+        if (generationTime < 2 && numberOfZeros < 3) {
             numberOfZeros++;
             block.setNChangeMessage("N was increased to " + numberOfZeros);
-        } else if (generationTime > 60) {
+        } else if (generationTime > 5 && numberOfZeros > 0) {
             numberOfZeros--;
-            block.setNChangeMessage("N was decreased by 1");
+            block.setNChangeMessage("N was decreased to " + numberOfZeros);
         } else {
             block.setNChangeMessage("N stays the same");
         }
